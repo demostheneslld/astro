@@ -3,6 +3,7 @@
 #####################################
 
 def scriptsummary(script, inputs, outputs):
+	import os
 	# SCRIPT SUMMARY
 	print("\n\n\n######################################################\n")
 	if '__file__' in globals():

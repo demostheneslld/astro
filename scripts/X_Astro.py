@@ -4,8 +4,9 @@
 
 
 def parse_sr_ss(inputs, difference_from_utc_standard):
-  
+  import os
   import datetime as dt
+  import pandas as pd
 
   now = dt.datetime.now()
   year = now.year
@@ -25,9 +26,7 @@ def parse_sr_ss(inputs, difference_from_utc_standard):
 
   # cut off extra crap
   raw = data[firstdata:firstdata+maxdays]
-      
   test = raw
-
   data = pd.DataFrame(columns=columns)
   temp = pd.DataFrame([[dt.datetime(year,1,1),0,0,'a','a',0,0,dt.datetime(year,1,1,0,0),'a']], columns=columns)
 
@@ -94,4 +93,64 @@ def parse_sr_ss(inputs, difference_from_utc_standard):
       s_set['time'][i] = s_set['time'][i] + dt.timedelta(hours = difference_from_utc_standard)
       s_set['time'][i] = s_set['time'][i].replace(day=1)
 
-  return {'s_set' : s_set, 's_rise' : s_rise}
+  return {'s_set' : s_set, 's_rise' : s_rise, 'year' : year}
+
+
+def astroplot(s_rise, s_set, outputs, year):
+  #PLOTTING
+  import pandas as pd
+  import datetime as dt
+  import matplotlib
+  from matplotlib import pyplot as plt
+
+  # Set up figure
+  edgecolor='None'
+  linewidth=5
+  sun_area = 500
+  plt.style.use('ggplot')
+  matplotlib.rc('xtick', labelsize=8) 
+  matplotlib.rc('ytick', labelsize=8) 
+  fig, ax = plt.subplots(nrows = 1, ncols = 1, figsize=(16,9))
+
+  xr = list(pd.to_datetime(s_rise['period']))
+  sr = list(pd.to_datetime(s_rise['time']))
+  xs = list(pd.to_datetime(s_set['period']))
+  ss = list(pd.to_datetime(s_set['time']))
+
+  bottom = dt.datetime(year,1,1,0,0)
+  top = dt.datetime(year,1,2,0,0)
+  start = dt.datetime(year,1,1,0,0)
+  end = dt.datetime(year+1,1,1,0,0)
+  now = dt.datetime.now()
+
+  #sunrise
+  ax.plot(xr,sr, color = 'orange', label='sunrise', linewidth = linewidth)
+  ax.fill_between(xr,bottom,sr, facecolor = '#00001F', edgecolor = edgecolor)
+
+  #sunset
+  ax.plot(xs,ss, color = 'purple', label='sunset', linewidth = linewidth)
+  ax.fill_between(xs,ss,top, facecolor = '#00001F', edgecolor = edgecolor)
+
+  #daytime
+  ax.fill_between(xs,sr,ss, facecolor = '#3399FF', edgecolor = edgecolor)
+
+  #today
+  ax.axvline(x=dt.datetime.now(), linewidth=linewidth, ls = '--', color='k', label = 'today', alpha = .5, zorder=998)
+
+  curr_hour = now.hour
+  curr_min = now.minute
+
+  ax.scatter(now, dt.datetime(year,1,1,curr_hour,curr_min), s=sun_area, c='#FFCC00', alpha=1, zorder=999, label = 'sun location')
+
+  # Style Customization
+  ax.set_title("Current astronomical time in Woodland, WA" , fontsize=18, color='grey')
+  ax.set_ylabel("Time", fontsize=8)
+  ax.set_xlabel("Date", fontsize=8)
+  ax.xaxis.set_major_locator(matplotlib.dates.MonthLocator())
+  ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%b-%Y'))
+  ax.tick_params( axis='both', which ='both', bottom='off', top ='off', left='off', right='off')
+  ax.set_ylim([bottom, top])
+  ax.set_xlim([start, end])
+
+  plt.savefig('current-astro-time', facecolor='black')
+  plt.close(fig)
