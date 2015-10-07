@@ -14,11 +14,6 @@ Main folder = Contains license, readme, and batch files to run scripts more easi
 - Scripts = Where actual scripts live ("X_" at the beginning of a script means it holds functions and shouldn't be executed independently)
 - Testing = Just for testing
 
-
-#######################
-##### HOW TO USE ######
-#######################
-
 # INPUT/OUTPUT
 Input data from http://aa.usno.navy.mil/data/docs/RS_OneYear.php
 - Use Form A or Form B to get a table of current year sunrise/sunset data
