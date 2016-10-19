@@ -1,4 +1,4 @@
 @echo off
 cd C:\Users\Nathan\Dropbox\GitHub\astro\scripts
-python astro_desktop_img.py
+python livedesktop.py
 @echo on

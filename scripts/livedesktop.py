@@ -3,6 +3,7 @@ description = 'Produces new astro chart every minute while script runs and sets 
 inputs = {'astro' : 'C:/Users/Nathan/Dropbox/GitHub/astro/inputs'}
 outputs = {'astro' : 'C:/Users/Nathan/Dropbox/GitHub/astro/outputs'}
 from X_Imports import *
+import datetime as dt
 script = str(os.path.realpath(__file__)) if '__file__' in globals() else 'Current Script Unknown'
 header.scriptsummary(script, inputs, outputs)
 pd.options.mode.chained_assignment = None
@@ -23,8 +24,10 @@ os.chdir(outputs['astro'])
 while (1==1):
 	# Produce chart
 	astro.astroplot(s_rise, s_set, outputs, year)
-	# Set desktop background (only works on windows if you have admin on your machine)
-	SPI_SETDESKWALLPAPER = 20 
-	ctypes.windll.user32.SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, str(outputs['astro']) + "/current-astro-time.png" , 0)
+	# Set desktop background (only works on windows 10 if you have admin on your machine)
+	SPI_SETDESKWALLPAPER = 20
+	image_path =  str(outputs['astro']) + "/current-astro-time.png"
+	ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path , 3)
+	print('Updated ' + dt.datetime.now().strftime('%Y-%m-%d %I:%M'))
 	# Wait 60 seconds before producing a new graph
 	time.sleep(60)

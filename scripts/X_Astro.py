@@ -2,7 +2,6 @@
 ########## ASTRO FUNCTIONS #############
 ########################################
 
-
 def parse_sr_ss(inputs, difference_from_utc_standard):
   import os
   import datetime as dt
@@ -84,8 +83,8 @@ def parse_sr_ss(inputs, difference_from_utc_standard):
       data['time'][i] = dt.datetime(year,1,2,int(data['hour'][i]),int(data['min'][i]))
       data['period'][i] = dt.datetime(year,int(data['month'][i]),int(data['day'][i]))
 
-  s_rise = data[data['event'] == 'r'].sort('period').reset_index(drop=True)
-  s_set = data[data['event'] == 's'].sort('period').reset_index(drop=True)
+  s_rise = data.loc[data['event'] == 'r',].sort_values(by = 'period').reset_index(drop=True)
+  s_set = data.loc[data['event'] == 's',].sort_values(by = 'period').reset_index(drop=True)
 
   for i in range(0,len(s_rise['time'])):
       s_rise['time'][i] = s_rise['time'][i] + dt.timedelta(hours = difference_from_utc_standard)
