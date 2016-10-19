@@ -1,4 +1,4 @@
-# NOTE: THE LIVE DESKTOP FEATURE ONLY WORKS ON WINDOWS AS OF THIS COMMIT
+NOTE: THE LIVE DESKTOP FEATURE ONLY WORKS ON WINDOWS AS OF THIS COMMIT
 
 # Description
 - Parses sunsrise/sunset data from US Naval Observatory standardized export
@@ -8,16 +8,11 @@
 
 # Folder structure
 Main folder = Contains license, readme, and batch files to run scripts more easily (see How to Use / Running Scripts)
-> .GIT = Folder for Github history etc
-> Inputs = Files used as inputs for scripts
-> Outputs = Outputs from scripts
-> Scripts = Where actual scripts live ("X_" at the beginning of a script means it holds functions and shouldn't be executed independently)
-> Testing = Just for testing
-
-
-#######################
-##### HOW TO USE ######
-#######################
+- .GIT = Folder for Github history etc
+- Inputs = Files used as inputs for scripts
+- Outputs = Outputs from scripts
+- Scripts = Where actual scripts live ("X_" at the beginning of a script means it holds functions and shouldn't be executed independently)
+- Testing = Just for testing
 
 # INPUT/OUTPUT
 Input data from http://aa.usno.navy.mil/data/docs/RS_OneYear.php
