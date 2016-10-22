@@ -104,8 +104,9 @@ def astroplot(s_rise, s_set, outputs, year):
 
   # Set up figure
   edgecolor='None'
-  linewidth=5
-  sun_area = 500
+  linewidth= 25
+  today_linewidth = 5
+  sun_area = 800
   plt.style.use('ggplot')
   matplotlib.rc('xtick', labelsize=8) 
   matplotlib.rc('ytick', labelsize=8) 
@@ -123,33 +124,44 @@ def astroplot(s_rise, s_set, outputs, year):
   now = dt.datetime.now()
 
   #sunrise
-  ax.plot(xr,sr, color = 'orange', label='sunrise', linewidth = linewidth)
-  ax.fill_between(xr,bottom,sr, facecolor = '#00001F', edgecolor = edgecolor)
+  ax.plot(xr,sr, color = '#804d00', label='sunrise', linewidth = linewidth)
+  ax.fill_between(xr,bottom,sr, facecolor = '#031430', edgecolor = edgecolor) #night
 
   #sunset
-  ax.plot(xs,ss, color = 'purple', label='sunset', linewidth = linewidth)
-  ax.fill_between(xs,ss,top, facecolor = '#00001F', edgecolor = edgecolor)
+  ax.plot(xs,ss, color = '#140033', label='sunset', linewidth = linewidth)
+  ax.fill_between(xs,ss,top, facecolor = '#031430', edgecolor = edgecolor) #night
 
   #daytime
-  ax.fill_between(xs,sr,ss, facecolor = '#3399FF', edgecolor = edgecolor)
+  ax.fill_between(xs,sr,ss, facecolor = '#99ccff', edgecolor = edgecolor)
 
-  #today
-  ax.axvline(x=dt.datetime.now(), linewidth=linewidth, ls = '--', color='k', label = 'today', alpha = .5, zorder=998)
+  #today/sun
+  ax.axvline(x=dt.datetime.now(), linewidth=today_linewidth, ls = '--', color='k', label = 'today', alpha = .5, zorder=998)
 
   curr_hour = now.hour
   curr_min = now.minute
 
-  ax.scatter(now, dt.datetime(year,1,1,curr_hour,curr_min), s=sun_area, c='#FFCC00', alpha=1, zorder=999, label = 'sun location')
+  ax.scatter(now, dt.datetime(year,1,1,curr_hour,curr_min), s=sun_area, c='#ffffff', alpha=1, zorder=999, linewidth = 0, label = 'sun location')
 
   # Style Customization
-  ax.set_title("Current astronomical time in Woodland, WA" , fontsize=18, color='grey')
-  ax.set_ylabel("Time", fontsize=8)
-  ax.set_xlabel("Date", fontsize=8)
+  ax.set_title("Current Astro Time: Woodland, WA" , fontsize=16, color='grey')
+  ax.set_xlabel('Date', fontsize = 8, color = 'grey')
   ax.xaxis.set_major_locator(matplotlib.dates.MonthLocator())
   ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%b-%Y'))
+  ax.yaxis.set_ticks_position('none') 
+  ax.yaxis.set_major_formatter(matplotlib.dates.DateFormatter('%H:%M'))
   ax.tick_params( axis='both', which ='both', bottom='off', top ='off', left='off', right='off')
   ax.set_ylim([bottom, top])
   ax.set_xlim([start, end])
+  ax.set_axis_bgcolor('black')
+  ax.spines['top'].set_visible(False)
+  ax.spines['bottom'].set_visible(False)
+  ax.spines['left'].set_visible(False)
+  ax.spines['right'].set_visible(False)
+  ax.tick_params(axis=u'both', which=u'both',length=0)
+
+  plt.gca().xaxis.grid(False) 
+  plt.gca().yaxis.grid(False) 
+  plt.tight_layout()
 
   plt.savefig('current-astro-time', facecolor='black')
   plt.close(fig)
